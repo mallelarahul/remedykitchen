@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>RemedyKitchen — World Food Remedies</title>
+<meta name="description" content="Discover healing recipes and food remedies from 190+ countries. Full cooking instructions, health benefits, and ancient wisdom powered by AI."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#fdf8f0;--warm:#f5ede0;--warm2:#efe4d2;
+  --spice:#c2440e;--gold:#d4922a;--herb:#3a6b2e;
+  --dark:#1e1206;--mid:#6b4c2a;--light:#a08060;
+  --white:#ffffff;--border:rgba(107,76,42,0.13);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--dark);min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(30,18,6,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,146,42,0.2);padding:0 2rem;}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:700;color:#f5ede0;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nl{color:rgba(245,237,224,0.65);font-size:0.85rem;padding:6px 14px;border-radius:6px;transition:.2s;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;}
+.nl:hover,.nl.active{color:#f5ede0;background:rgba(212,146,42,0.15);}
+.nl-cta{background:var(--gold)!important;color:var(--dark)!important;border-radius:20px!important;font-weight:600!important;}
+.nl-cta:hover{background:#e8a83a!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:2px;background:#f5ede0;border-radius:2px;}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* HERO */
+.hero{background:linear-gradient(145deg,#1a0f04 0%,#3a1e08 35%,#5e2d0e 65%,#7a3a12 100%);min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,rgba(212,146,42,0.07) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(194,68,14,0.09) 0%,transparent 50%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(212,146,42,0.12);border:1px solid rgba(212,146,42,0.3);border-radius:50px;padding:5px 18px;font-size:0.74rem;color:rgba(245,237,224,0.75);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.5rem;animation:fadeUp .6s ease both;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:700;color:#f5ede0;line-height:1.15;max-width:800px;margin-bottom:1.2rem;animation:fadeUp .6s .1s ease both;}
+.hero h1 em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:1rem;color:rgba(245,237,224,0.55);max-width:520px;line-height:1.85;margin-bottom:2.5rem;animation:fadeUp .6s .2s ease both;}
+.hero-search{width:100%;max-width:620px;animation:fadeUp .6s .3s ease both;}
+.sbox{display:flex;background:rgba(255,255,255,0.07);border:1px solid rgba(212,146,42,0.35);border-radius:50px;padding:7px 7px 7px 22px;gap:8px;align-items:center;}
+.sbox input{flex:1;background:transparent;border:none;outline:none;font-size:1rem;color:#f5ede0;font-family:'DM Sans',sans-serif;}
+.sbox input::placeholder{color:rgba(245,237,224,0.33);}
+.btn-gold{background:var(--gold);color:var(--dark);border:none;border-radius:50px;padding:11px 26px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.2s;white-space:nowrap;}
+.btn-gold:hover{background:#e8a83a;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:1.2rem;animation:fadeUp .6s .4s ease both;}
+.chip{background:rgba(255,255,255,0.05);border:1px solid rgba(212,146,42,0.2);color:rgba(245,237,224,0.65);border-radius:50px;padding:5px 14px;font-size:0.78rem;cursor:pointer;transition:.2s;}
+.chip:hover{background:rgba(212,146,42,0.13);border-color:rgba(212,146,42,0.5);color:#f5ede0;}
+.hero-stats{display:flex;gap:3rem;margin-top:3.5rem;animation:fadeUp .6s .5s ease both;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);text-align:center;}
+.stat-label{font-size:0.74rem;color:rgba(245,237,224,0.4);text-transform:uppercase;letter-spacing:1px;margin-top:2px;text-align:center;}
+.scroll-hint{position:absolute;bottom:1.8rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;color:rgba(245,237,224,0.25);font-size:.7rem;letter-spacing:1.5px;}
+.scroll-line{width:1px;height:28px;background:linear-gradient(rgba(245,237,224,0.3),transparent);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTIONS */
+section{padding:5rem 2rem;}
+.wrap{max-width:1200px;margin:0 auto;}
+.sec-label{font-size:.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--spice);font-weight:600;margin-bottom:.5rem;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--dark);line-height:1.2;margin-bottom:.9rem;}
+.sec-title em{color:var(--gold);font-style:italic;}
+.sec-sub{font-size:.95rem;color:var(--mid);line-height:1.8;max-width:540px;}
+
+/* BENEFITS BAR */
+.bar{background:var(--spice);padding:2.8rem 2rem;}
+.bar-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2rem;}
+.bar-item{text-align:center;}
+.bar-icon{font-size:1.7rem;margin-bottom:.4rem;}
+.bar-item h4{font-size:.88rem;font-weight:600;color:#fff;margin-bottom:.2rem;}
+.bar-item p{font-size:.76rem;color:rgba(255,255,255,0.62);line-height:1.5;}
+
+/* CUISINE GRID */
+.cu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;margin-top:2.2rem;}
+.cu-card{background:var(--cream);border:1px solid var(--border);border-radius:13px;padding:1.1rem 1rem;text-align:center;cursor:pointer;transition:all .22s;}
+.cu-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(107,76,42,0.14);border-color:var(--gold);background:var(--warm);}
+.cu-card .flag{font-size:1.9rem;margin-bottom:.4rem;display:block;}
+.cu-card h3{font-size:.83rem;font-weight:600;color:var(--dark);margin-bottom:1px;}
+.cu-card p{font-size:.7rem;color:var(--light);}
+
+/* FEATURED CARDS */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:18px;margin-top:2.2rem;}
+.feat-card{background:var(--white);border-radius:18px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .22s;}
+.feat-card:hover{transform:translateY(-5px);box-shadow:0 14px 38px rgba(107,76,42,0.11);}
+.ft{height:120px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;}
+.ft.a{background:linear-gradient(135deg,#fff3e0,#ffe0b2);}
+.ft.b{background:linear-gradient(135deg,#fce4ec,#ffcdd2);}
+.ft.c{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);}
+.ft.d{background:linear-gradient(135deg,#e3f2fd,#bbdefb);}
+.ft.e{background:linear-gradient(135deg,#fff8e1,#ffe082);}
+.ft.f{background:linear-gradient(135deg,#f3e5f5,#e1bee7);}
+.fc-b{padding:1rem 1.1rem;}
+.fc-tag{display:inline-block;background:var(--warm);color:var(--mid);border-radius:50px;padding:2px 10px;font-size:.69rem;font-weight:500;margin-bottom:.4rem;}
+.fc-b h3{font-family:'Playfair Display',serif;font-size:.97rem;font-weight:600;color:var(--dark);margin-bottom:.3rem;}
+.fc-b p{font-size:.79rem;color:var(--light);line-height:1.6;}
+.fc-meta{display:flex;gap:10px;margin-top:.7rem;padding-top:.7rem;border-top:1px solid var(--border);}
+.fc-meta span{font-size:.7rem;color:var(--light);}
+
+/* HOW IT WORKS */
+.how{background:var(--dark);}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-top:2.2rem;}
+.how-card .num{font-family:'Playfair Display',serif;font-size:3.2rem;font-weight:700;color:rgba(212,146,42,.14);line-height:1;margin-bottom:.5rem;}
+.how-card h3{font-size:.97rem;font-weight:600;color:#f5ede0;margin-bottom:.4rem;}
+.how-card p{font-size:.83rem;color:rgba(245,237,224,.4);line-height:1.7;}
+.how .sec-title{color:#f5ede0;}
+.how .sec-sub{color:rgba(245,237,224,.4);}
+
+/* SEARCH PAGE */
+.sp-top{background:linear-gradient(135deg,#1a0f04,#3a1e08,#5e2d0e);padding:3rem 2rem 2rem;text-align:center;}
+.sp-top h2{font-family:'Playfair Display',serif;font-size:2rem;color:#f5ede0;margin-bottom:.4rem;}
+.sp-top p{font-size:.88rem;color:rgba(245,237,224,.45);margin-bottom:1.4rem;}
+.sp-sbox{max-width:640px;margin:0 auto;display:flex;background:rgba(255,255,255,0.08);border:1px solid rgba(212,146,42,.35);border-radius:50px;padding:8px 8px 8px 22px;gap:8px;}
+.sp-sbox input{flex:1;background:transparent;border:none;outline:none;font-size:1rem;color:#f5ede0;font-family:'DM Sans',sans-serif;}
+.sp-sbox input::placeholder{color:rgba(245,237,224,.3);}
+.sp-body{max-width:880px;margin:0 auto;padding:2rem 1.5rem;}
+.cat-label{font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--light);margin-bottom:.7rem;}
+.cat-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:2rem;}
+.cat-btn{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.79rem;cursor:pointer;color:var(--mid);transition:.18s;font-family:'DM Sans',sans-serif;}
+.cat-btn:hover{background:var(--warm);border-color:var(--gold);color:var(--dark);}
+.rlist{columns:3;gap:12px;}
+@media(max-width:720px){.rlist{columns:1;}}
+@media(max-width:960px){.rlist{columns:2;}}
+.rlink{display:block;break-inside:avoid;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.65rem 1rem;margin-bottom:10px;cursor:pointer;transition:.18s;font-size:.84rem;color:var(--dark);font-weight:500;}
+.rlink:hover{background:var(--warm);border-color:var(--gold);}
+.rlink small{font-size:.7rem;color:var(--light);font-weight:400;display:block;margin-top:1px;}
+
+/* RESULT */
+.rw{max-width:800px;margin:0 auto;padding:2rem 1.5rem;}
+.back-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:7px 16px;font-size:.81rem;color:var(--mid);cursor:pointer;margin-bottom:1.2rem;font-family:'DM Sans',sans-serif;transition:.18s;}
+.back-btn:hover{border-color:var(--gold);color:var(--dark);}
+.rc{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;animation:fadeUp .35s ease;}
+.rc-head{background:linear-gradient(140deg,#1e1206,#3d2409,#6b3410);padding:2rem;}
+.rc-head h1{font-family:'Playfair Display',serif;font-size:1.75rem;color:#f5ede0;margin-bottom:.25rem;}
+.rc-head .sub{font-size:.8rem;opacity:.45;color:#f5ede0;margin-bottom:.9rem;}
+.tags{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{background:rgba(212,146,42,.2);color:rgba(245,237,224,.85);border:1px solid rgba(212,146,42,.3);border-radius:50px;padding:3px 12px;font-size:.71rem;}
+.rc-body{padding:1.8rem;}
+.rs{margin-bottom:1.7rem;}
+.rst{font-family:'Playfair Display',serif;font-size:.93rem;color:var(--spice);margin-bottom:.65rem;display:flex;align-items:center;gap:8px;}
+.rst::after{content:'';flex:1;height:1px;background:rgba(194,68,14,.12);}
+.desc{font-size:.9rem;color:#4a3520;line-height:1.8;}
+.ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.ing{background:var(--warm);border-radius:9px;padding:8px 12px;font-size:.81rem;color:var(--dark);border-left:3px solid var(--gold);}
+.step{display:flex;gap:11px;margin-bottom:11px;align-items:flex-start;}
+.sn{min-width:27px;height:27px;background:var(--spice);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.73rem;font-weight:600;flex-shrink:0;margin-top:1px;}
+.st{font-size:.87rem;color:#4a3520;line-height:1.7;}
+.rem-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.rem{background:#f0f9f0;border-radius:10px;padding:10px 13px;border-left:3px solid var(--herb);}
+.rem strong{font-size:.79rem;color:var(--herb);display:block;margin-bottom:2px;}
+.rem span{font-size:.77rem;color:#2d4d28;line-height:1.55;}
+.nut-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+.nut{background:var(--warm);border-radius:10px;padding:9px;text-align:center;}
+.nut-val{font-size:1.05rem;font-weight:700;color:var(--spice);}
+.nut-key{font-size:.7rem;color:var(--light);margin-top:2px;}
+.tip{background:linear-gradient(135deg,#fdf3e3,#faebd7);border-radius:11px;padding:13px 15px;border-left:4px solid var(--gold);font-size:.86rem;color:#5a3d10;line-height:1.7;}
+.warn{background:linear-gradient(135deg,#fef0ec,#fde0d8);border-radius:11px;padding:13px 15px;border-left:4px solid var(--spice);font-size:.86rem;color:#7a1e06;line-height:1.7;}
+
+/* LOADING */
+.spinner{width:40px;height:40px;border:3px solid var(--warm2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sk{display:inline-block;background:rgba(255,255,255,.14);border-radius:6px;animation:skp 1.4s ease-in-out infinite;}
+@keyframes skp{0%,100%{opacity:.3;}50%{opacity:.8;}}
+
+/* ABOUT */
+.about-hero{background:linear-gradient(135deg,#1a0f04,#4a2510);padding:5rem 2rem;text-align:center;}
+.about-hero h1{font-family:'Playfair Display',serif;font-size:2.7rem;color:#f5ede0;margin-bottom:1rem;}
+.about-hero p{font-size:.97rem;color:rgba(245,237,224,.5);max-width:540px;margin:0 auto;line-height:1.85;}
+.about-body{max-width:920px;margin:0 auto;padding:4rem 2rem;}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-bottom:3.5rem;}
+@media(max-width:680px){.ag{grid-template-columns:1fr;}}
+.ab h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--dark);margin-bottom:.7rem;}
+.ab p{font-size:.88rem;color:var(--mid);line-height:1.85;}
+.mission{background:var(--dark);border-radius:18px;padding:2.5rem;margin-bottom:3rem;text-align:center;}
+.mission h2{font-family:'Playfair Display',serif;font-size:1.75rem;color:#f5ede0;margin-bottom:.9rem;}
+.mission p{font-size:.9rem;color:rgba(245,237,224,.45);line-height:1.85;max-width:580px;margin:0 auto;}
+
+/* FOOTER */
+footer{background:var(--dark);padding:4rem 2rem 2rem;}
+.fi{max-width:1200px;margin:0 auto;}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem;}
+@media(max-width:680px){.fg{grid-template-columns:1fr;gap:1.8rem;}}
+.fb-logo{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#f5ede0;margin-bottom:.5rem;}
+.fb-logo span{color:var(--gold);}
+.fb-desc{font-size:.8rem;color:rgba(245,237,224,.37);line-height:1.7;max-width:250px;}
+.fc h4{font-size:.74rem;text-transform:uppercase;letter-spacing:1.5px;color:rgba(245,237,224,.3);margin-bottom:.8rem;}
+.fc a{display:block;font-size:.82rem;color:rgba(245,237,224,.5);text-decoration:none;margin-bottom:.45rem;cursor:pointer;transition:.15s;}
+.fc a:hover{color:#f5ede0;}
+.fb{border-top:1px solid rgba(245,237,224,.07);padding-top:1.4rem;display:flex;justify-content:space-between;align-items:center;font-size:.76rem;color:rgba(245,237,224,.22);}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 1rem;}
+  .nav-links{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(20,10,2,.97);padding:1rem;gap:3px;border-bottom:1px solid rgba(212,146,42,.2);}
+  .hamburger{display:flex;}
+  .hero{min-height:auto;padding:3rem 1.2rem 2.5rem;}
+  .hero-stats{gap:1.5rem;}
+  .stat-num{font-size:1.5rem;}
+  .ing-grid,.rem-grid,.nut-grid{grid-template-columns:1fr;}
+  .rc-body{padding:1.2rem;}
+  section{padding:3rem 1.2rem;}
+  .sp-body{padding:1.5rem 1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="nav('home')">🌿 Remedy<span>Kitchen</span></div>
+    <div class="nav-links" id="navLinks">
+      <button class="nl active" id="nl-home" onclick="nav('home')">Home</button>
+      <button class="nl" id="nl-search" onclick="nav('search')">Explore Recipes</button>
+      <button class="nl" id="nl-cuisines" onclick="nav('cuisines')">World Cuisines</button>
+      <button class="nl" id="nl-about" onclick="nav('about')">About</button>
+      <button class="nl nl-cta" onclick="nav('search')">Find a Remedy →</button>
+    </div>
+    <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div class="page active" id="page-home">
+
+  <div class="hero">
+    <div class="hero-badge">🌍 &nbsp;190+ Countries · 2,000+ Remedies</div>
+    <h1>The World's <em>Food Remedies</em> &amp; Cooking Compendium</h1>
+    <p class="hero-sub">From Ayurvedic golden milk to Japanese miso, from Moroccan tagines to African moringa — discover healing recipes from every corner of the earth.</p>
+    <div class="hero-search">
+      <div class="sbox">
+        <input id="heroInput" type="text" placeholder="Try 'chicken curry', 'ginger tea', 'bone broth', 'turmeric milk'…"/>
+        <button class="btn-gold" onclick="heroSearch()">Search Recipe</button>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip" onclick="go('chicken curry')">🍛 Chicken Curry</span>
+      <span class="chip" onclick="go('ginger honey lemon tea')">🫖 Ginger Tea</span>
+      <span class="chip" onclick="go('turmeric golden milk')">🥛 Golden Milk</span>
+      <span class="chip" onclick="go('japanese miso soup')">🍜 Miso Soup</span>
+      <span class="chip" onclick="go('bone broth healing soup')">🍲 Bone Broth</span>
+      <span class="chip" onclick="go('garlic honey cold remedy')">🧄 Garlic Remedy</span>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">2,000+</div><div class="stat-label">Remedies</div></div>
+      <div><div class="stat-num">190+</div><div class="stat-label">Countries</div></div>
+      <div><div class="stat-num">50+</div><div class="stat-label">Cuisines</div></div>
+    </div>
+    <div class="scroll-hint"><div class="scroll-line"></div>SCROLL</div>
+  </div>
+
+  <div class="bar">
+    <div class="bar-inner">
+      <div class="bar-item"><div class="bar-icon">🌿</div><h4>Ancient Wisdom</h4><p>Recipes passed down through centuries of healing tradition</p></div>
+      <div class="bar-item"><div class="bar-icon">🔬</div><h4>Science-Backed</h4><p>Modern research confirms what ancestors knew for millennia</p></div>
+      <div class="bar-item"><div class="bar-icon">🌍</div><h4>Every Culture</h4><p>African, Asian, European, American, Middle Eastern &amp; more</p></div>
+      <div class="bar-item"><div class="bar-icon">⚡</div><h4>AI-Powered</h4><p>Instant detailed recipes, techniques and health benefits</p></div>
+    </div>
+  </div>
+
+  <section style="background:var(--white);">
+    <div class="wrap">
+      <div class="sec-label">Explore By Region</div>
+      <div class="sec-title">Cuisines of the <em>World</em></div>
+      <p class="sec-sub">Every culture has its own healing food traditions. Click any cuisine to explore its remedies.</p>
+      <div class="cu-grid" id="homeCuGrid"></div>
+    </div>
+  </section>
+
+  <section style="background:linear-gradient(180deg,var(--warm) 0%,var(--cream) 100%);">
+    <div class="wrap">
+      <div class="sec-label">Most Powerful Remedies</div>
+      <div class="sec-title">Healing Foods That <em>Changed History</em></div>
+      <div class="feat-grid">
+        <div class="feat-card" onclick="go('turmeric golden milk ayurvedic')"><div class="ft a">🥛</div><div class="fc-b"><span class="fc-tag">Ayurvedic · India</span><h3>Turmeric Golden Milk</h3><p>Ancient Vedic remedy used for 3,000 years. Anti-inflammatory, immune-boosting powerhouse.</p><div class="fc-meta"><span>⏱ 10 min</span><span>🌿 5 benefits</span></div></div></div>
+        <div class="feat-card" onclick="go('chinese astragalus herbal soup')"><div class="ft b">🍲</div><div class="fc-b"><span class="fc-tag">Traditional · China</span><h3>Astragalus Herbal Soup</h3><p>A cornerstone of Traditional Chinese Medicine. Boosts immunity and qi energy flow.</p><div class="fc-meta"><span>⏱ 2 hrs</span><span>🌿 6 benefits</span></div></div></div>
+        <div class="feat-card" onclick="go('japanese matcha ceremony tea')"><div class="ft c">🍵</div><div class="fc-b"><span class="fc-tag">Ceremonial · Japan</span><h3>Ceremonial Matcha</h3><p>Zen monks' secret for calm focus. L-theanine and antioxidants in perfect harmony.</p><div class="fc-meta"><span>⏱ 5 min</span><span>🌿 7 benefits</span></div></div></div>
+        <div class="feat-card" onclick="go('mediterranean garlic olive oil remedy')"><div class="ft d">🫒</div><div class="fc-b"><span class="fc-tag">Mediterranean · Greece</span><h3>Garlic &amp; Olive Oil Tonic</h3><p>Foundation of the world's healthiest diet. Heart-protecting, anti-bacterial properties.</p><div class="fc-meta"><span>⏱ 15 min</span><span>🌿 5 benefits</span></div></div></div>
+        <div class="feat-card" onclick="go('african moringa leaf soup')"><div class="ft e">🌿</div><div class="fc-b"><span class="fc-tag">Traditional · West Africa</span><h3>Moringa Leaf Soup</h3><p>Called "the miracle tree" — more nutrients than almost any plant food on earth.</p><div class="fc-meta"><span>⏱ 30 min</span><span>🌿 8 benefits</span></div></div></div>
+        <div class="feat-card" onclick="go('mexican epazote black bean remedy')"><div class="ft f">🌶️</div><div class="fc-b"><span class="fc-tag">Traditional · Mexico</span><h3>Epazote Black Beans</h3><p>Aztec healing staple. Digestive herb with anti-parasitic and deeply nutritive properties.</p><div class="fc-meta"><span>⏱ 1.5 hrs</span><span>🌿 4 benefits</span></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="wrap">
+      <div class="sec-label" style="color:rgba(212,146,42,.6);">Simple as Cooking</div>
+      <div class="sec-title">How RemedyKitchen <em>Works</em></div>
+      <div class="how-grid">
+        <div class="how-card"><div class="num">01</div><h3>Search Any Food</h3><p>Type any dish, ingredient, or health concern. Our AI knows over 2,000 world remedies.</p></div>
+        <div class="how-card"><div class="num">02</div><h3>Get Full Recipe</h3><p>Receive complete ingredient lists, step-by-step cooking method, and pro chef tips.</p></div>
+        <div class="how-card"><div class="num">03</div><h3>Discover Benefits</h3><p>Understand the healing properties, nutritional value, and traditional uses of each dish.</p></div>
+        <div class="how-card"><div class="num">04</div><h3>Heal &amp; Nourish</h3><p>Cook with intention. Use food as your daily medicine, just as cultures have for millennia.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer><div class="fi">
+    <div class="fg">
+      <div><div class="fb-logo">🌿 Remedy<span>Kitchen</span></div><p class="fb-desc">The world's most complete food remedies and cooking guide. Ancient wisdom meets modern AI.</p></div>
+      <div class="fc"><h4>Explore</h4><a onclick="nav('search')">All Recipes</a><a onclick="nav('cuisines')">World Cuisines</a><a onclick="go('cold flu remedy')">Cold Remedies</a><a onclick="go('digestive healing soup')">Digestive Health</a></div>
+      <div class="fc"><h4>Regions</h4><a onclick="go('indian ayurvedic remedy')">Indian Ayurvedic</a><a onclick="go('traditional chinese medicine food')">Chinese Medicine</a><a onclick="go('mediterranean diet remedy')">Mediterranean</a><a onclick="go('african traditional healing food')">African Healing</a></div>
+      <div class="fc"><h4>Company</h4><a onclick="nav('about')">About Us</a><a>Contact</a><a>Privacy Policy</a><a>Terms of Use</a></div>
+    </div>
+    <div class="fb"><span>© 2025 RemedyKitchen. All rights reserved.</span><span>Food as medicine — always consult a healthcare professional.</span></div>
+  </div></footer>
+</div>
+
+<!-- ══════════ SEARCH / RECIPE ══════════ -->
+<div class="page" id="page-search">
+  <div class="sp-top">
+    <h2>Explore World Remedies</h2>
+    <p>Search any recipe, ingredient or remedy from across the globe</p>
+    <div class="sp-sbox">
+      <input id="spInput" type="text" placeholder="e.g. 'chicken curry', 'ginger tea', 'bone broth'…"/>
+      <button class="btn-gold" onclick="spSearch()">Search</button>
+    </div>
+  </div>
+  <div id="spBody" class="sp-body">
+    <div class="cat-label">Quick categories</div>
+    <div class="cat-row">
+      <span class="cat-btn" onclick="go('cold and flu healing remedy')">🤒 Cold &amp; Flu</span>
+      <span class="cat-btn" onclick="go('digestive healing gut remedy')">🫁 Digestive</span>
+      <span class="cat-btn" onclick="go('anti inflammatory remedy food')">🔥 Anti-Inflammatory</span>
+      <span class="cat-btn" onclick="go('sleep calming herbal remedy')">😴 Sleep &amp; Calm</span>
+      <span class="cat-btn" onclick="go('immune boosting super food remedy')">💪 Immunity</span>
+      <span class="cat-btn" onclick="go('heart health cardiovascular food remedy')">❤️ Heart Health</span>
+      <span class="cat-btn" onclick="go('weight loss detox remedy')">⚖️ Detox</span>
+      <span class="cat-btn" onclick="go('skin glow beauty food remedy')">✨ Skin &amp; Beauty</span>
+      <span class="cat-btn" onclick="go('energy boost adaptogen remedy')">⚡ Energy</span>
+      <span class="cat-btn" onclick="go('blood sugar diabetes food remedy')">🩸 Blood Sugar</span>
+      <span class="cat-btn" onclick="go('joint pain arthritis remedy food')">🦴 Joint Pain</span>
+      <span class="cat-btn" onclick="go('anxiety stress mental health food remedy')">🧠 Mental Health</span>
+    </div>
+    <div class="cat-label">Browse all world remedies — click any to get full recipe</div>
+    <div class="rlist" id="allList"></div>
+  </div>
+  <div id="recipeResult" style="display:none;"></div>
+  <footer><div class="fi"><div class="fb"><span>© 2025 RemedyKitchen</span><span onclick="nav('home')" style="cursor:pointer;">← Back to Home</span></div></div></footer>
+</div>
+
+<!-- ══════════ WORLD CUISINES ══════════ -->
+<div class="page" id="page-cuisines">
+  <div style="background:linear-gradient(135deg,#1a0f04,#4a2510);padding:4rem 2rem 3rem;text-align:center;">
+    <div class="sec-label" style="color:rgba(212,146,42,.7);">Explore</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:2.4rem;color:#f5ede0;margin-bottom:.7rem;">World Cuisines &amp; <em style="color:var(--gold);">Healing Traditions</em></h1>
+    <p style="color:rgba(245,237,224,.42);font-size:.93rem;max-width:480px;margin:0 auto;">Every culture has its own wisdom for using food as medicine.</p>
+  </div>
+  <section style="background:var(--white);padding:3rem 2rem;">
+    <div class="wrap"><div class="cu-grid" id="allCuGrid"></div></div>
+  </section>
+  <footer><div class="fi"><div class="fb"><span>© 2025 RemedyKitchen</span></div></div></footer>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <h1>About RemedyKitchen</h1>
+    <p>We believe food is medicine. Every culture has developed profound knowledge about using ingredients to heal, nourish, and restore. We make that knowledge available to everyone.</p>
+  </div>
+  <div class="about-body">
+    <div class="mission"><h2>Our Mission</h2><p>To make the entire world's food remedy knowledge accessible to everyone — combining ancient wisdom from 190+ countries with modern AI to deliver instant, detailed, accurate healing recipes.</p></div>
+    <div class="ag">
+      <div class="ab"><h3>🌿 The Tradition</h3><p>From Ayurvedic medicine in India to Traditional Chinese Medicine, from African ethnobotany to Amazonian plant wisdom — humanity has always known that food heals. These traditions predate modern medicine by thousands of years, and modern research increasingly validates what our ancestors knew.</p></div>
+      <div class="ab"><h3>🔬 The Science</h3><p>Curcumin in turmeric reduces inflammation. Allicin in garlic fights bacteria. Catechins in green tea protect cells. The bioactive compounds in traditional healing foods are now studied in laboratories around the world, confirming what traditional practitioners have known for generations.</p></div>
+      <div class="ab"><h3>🤖 The Technology</h3><p>We use advanced AI to synthesize knowledge from thousands of traditional recipes, medical studies, and culinary traditions. Ask about any dish or ingredient and receive complete recipes, preparation methods, and health benefits instantly.</p></div>
+      <div class="ab"><h3>⚠️ Important Note</h3><p>RemedyKitchen is an educational resource. While food has genuine therapeutic properties, it is not a substitute for professional medical care. Always consult a qualified healthcare provider for medical conditions.</p></div>
+    </div>
+  </div>
+  <footer><div class="fi"><div class="fb"><span>© 2025 RemedyKitchen. All rights reserved.</span></div></div></footer>
+</div>
+
+<script>
+// ══ DATA ══
+const CUISINES=[
+  {flag:'🇮🇳',name:'Indian',sub:'Ayurvedic tradition',q:'ayurvedic indian turmeric curry remedy'},
+  {flag:'🇨🇳',name:'Chinese',sub:'TCM & five elements',q:'traditional chinese medicine healing soup'},
+  {flag:'🇯🇵',name:'Japanese',sub:'Longevity & miso',q:'japanese miso soup healing remedy'},
+  {flag:'🇰🇷',name:'Korean',sub:'Kimchi & ginseng',q:'korean kimchi ginseng healing remedy'},
+  {flag:'🇹🇭',name:'Thai',sub:'Lemongrass & herbs',q:'thai lemongrass galangal healing soup'},
+  {flag:'🇻🇳',name:'Vietnamese',sub:'Pho & fresh herbs',q:'vietnamese pho healing bone broth'},
+  {flag:'🇮🇩',name:'Indonesian',sub:'Jamu & spices',q:'indonesian jamu turmeric ginger remedy'},
+  {flag:'🇲🇾',name:'Malaysian',sub:'Herbal tonics',q:'malaysian herbal tonic healing remedy'},
+  {flag:'🇵🇭',name:'Filipino',sub:'Sinigang & vinegar',q:'filipino sinigang healing tamarind soup'},
+  {flag:'🇱🇰',name:'Sri Lankan',sub:'Cinnamon & coconut',q:'sri lankan cinnamon coconut curry remedy'},
+  {flag:'🇮🇷',name:'Persian',sub:'Saffron & rose water',q:'persian saffron rose water healing remedy'},
+  {flag:'🇹🇷',name:'Turkish',sub:'Herb teas & yogurt',q:'turkish herbal tea yogurt healing remedy'},
+  {flag:'🇱🇧',name:'Lebanese',sub:"Za'atar & olive oil",q:'lebanese zaatar olive oil healing remedy'},
+  {flag:'🇪🇬',name:'Egyptian',sub:'Fenugreek & cumin',q:'egyptian fenugreek cumin healing remedy'},
+  {flag:'🇲🇦',name:'Moroccan',sub:'Ras el hanout & mint',q:'moroccan ras el hanout mint healing tagine'},
+  {flag:'🇪🇹',name:'Ethiopian',sub:'Berbere & teff',q:'ethiopian berbere teff healing injera remedy'},
+  {flag:'🇳🇬',name:'Nigerian',sub:'Moringa & bitter leaf',q:'nigerian moringa bitter leaf healing soup'},
+  {flag:'🇬🇭',name:'Ghanaian',sub:'Kontomire & palm',q:'ghanaian kontomire palm nut healing soup'},
+  {flag:'🇰🇪',name:'Kenyan',sub:'Sukuma wiki & ugali',q:'kenyan sukuma wiki greens healing remedy'},
+  {flag:'🇿🇦',name:'South African',sub:'Rooibos & buchu',q:'south african rooibos buchu healing remedy'},
+  {flag:'🇬🇷',name:'Greek',sub:'Mediterranean herbs',q:'greek mediterranean herb olive healing remedy'},
+  {flag:'🇮🇹',name:'Italian',sub:'Ribollita & olive oil',q:'italian ribollita tuscan bean healing soup'},
+  {flag:'🇫🇷',name:'French',sub:'Herbes de Provence',q:'french herbes de provence herbal healing remedy'},
+  {flag:'🇪🇸',name:'Spanish',sub:'Gazpacho & saffron',q:'spanish saffron gazpacho healing remedy'},
+  {flag:'🇵🇹',name:'Portuguese',sub:'Caldo verde',q:'portuguese caldo verde healing soup'},
+  {flag:'🇩🇪',name:'German',sub:'Sauerkraut & herbal',q:'german sauerkraut herbal healing remedy'},
+  {flag:'🇵🇱',name:'Polish',sub:'Beet borscht & rye',q:'polish borscht beet healing soup remedy'},
+  {flag:'🇷🇺',name:'Russian',sub:'Kvas & nettle soup',q:'russian nettle shchi healing soup remedy'},
+  {flag:'🇸🇪',name:'Nordic',sub:'Elderberry & rosehip',q:'nordic scandinavian elderberry rosehip remedy'},
+  {flag:'🇮🇪',name:'Irish',sub:'Nettle soup & oats',q:'irish nettle healing soup remedy'},
+  {flag:'🇲🇽',name:'Mexican',sub:'Epazote & nopal cactus',q:'mexican epazote nopal cactus healing remedy'},
+  {flag:'🇵🇪',name:'Peruvian',sub:'Muña & maca root',q:'peruvian maca muña healing andean remedy'},
+  {flag:'🇧🇷',name:'Brazilian',sub:'Açaí & guaraná',q:'brazilian acai guarana healing remedy'},
+  {flag:'🇨🇴',name:'Colombian',sub:'Changua & achiote',q:'colombian changua healing egg soup remedy'},
+  {flag:'🇦🇷',name:'Argentine',sub:'Yerba maté',q:'argentine yerba mate chimichurri healing remedy'},
+  {flag:'🇺🇸',name:'American',sub:'Bone broth & apple cider',q:'american bone broth apple cider vinegar remedy'},
+  {flag:'🇦🇺',name:'Australian',sub:'Bush tucker & wattleseed',q:'australian bush tucker aboriginal healing remedy'},
+  {flag:'🇳🇿',name:'Māori',sub:'Mānuka & kawakawa',q:'maori new zealand manuka kawakawa healing remedy'},
+  {flag:'🇵🇰',name:'Pakistani',sub:'Desi ghee & kahwa',q:'pakistani kahwa desi ghee healing remedy'},
+  {flag:'🇧🇩',name:'Bangladeshi',sub:'Mustard & hilsa',q:'bangladeshi mustard hilsa healing remedy'},
+  {flag:'🇳🇵',name:'Nepali',sub:'Timur & sel roti',q:'nepali timur pepper healing remedy'},
+  {flag:'🌏',name:'Tibetan',sub:'Butter tea & barley',q:'tibetan butter tea tsampa healing remedy'},
+  {flag:'🇨🇲',name:'Cameroonian',sub:'Njangsa & bush mango',q:'cameroonian njangsa healing african remedy'},
+  {flag:'🌍',name:'Caribbean',sub:'Soursop & noni',q:'caribbean soursop noni healing remedy'},
+];
+
+const RECIPES=[
+  {name:'Chicken Tikka Masala',cat:'Indian',q:'chicken tikka masala indian curry'},
+  {name:'Turmeric Golden Milk',cat:'Ayurvedic',q:'turmeric golden milk haldi doodh remedy'},
+  {name:'Chyawanprash Tonic',cat:'Ayurvedic',q:'chyawanprash ayurvedic immunity tonic'},
+  {name:'Ashwagandha Milk',cat:'Ayurvedic',q:'ashwagandha warm milk stress remedy'},
+  {name:'Triphala Digestive Tea',cat:'Ayurvedic',q:'triphala digestive ayurvedic tea remedy'},
+  {name:'Kitchari Cleanse',cat:'Ayurvedic',q:'kitchari ayurvedic cleanse rice mung'},
+  {name:'Masala Chai',cat:'Indian',q:'masala chai spiced tea remedy'},
+  {name:'Rasam Pepper Soup',cat:'South Indian',q:'rasam south indian pepper healing soup'},
+  {name:'Congee Healing Porridge',cat:'Chinese',q:'chinese congee healing rice porridge'},
+  {name:'Astragalus Bone Soup',cat:'TCM',q:'astragalus huang qi healing bone soup'},
+  {name:'Goji Berry Porridge',cat:'TCM',q:'goji berry wolfberry longevity porridge'},
+  {name:'Chrysanthemum Tea',cat:'Chinese',q:'chrysanthemum flower cooling tea remedy'},
+  {name:'Black Sesame Soup',cat:'Chinese',q:'black sesame sweet healing soup'},
+  {name:'Ginger Jujube Tea',cat:'TCM',q:'ginger jujube red date warming tea remedy'},
+  {name:"Lion's Mane Soup",cat:'Chinese',q:"lion's mane mushroom brain healing soup"},
+  {name:'Miso Soup',cat:'Japanese',q:'japanese dashi miso soup healing remedy'},
+  {name:'Matcha Ceremonial Tea',cat:'Japanese',q:'japanese matcha ceremonial green tea remedy'},
+  {name:'Umeboshi Remedy',cat:'Japanese',q:'shiso umeboshi japanese alkaline remedy'},
+  {name:'Natto Fermented Soy',cat:'Japanese',q:'natto fermented soybean heart health remedy'},
+  {name:'Amazake Sweet Sake',cat:'Japanese',q:'amazake sweet fermented rice drink remedy'},
+  {name:'Samgyetang Ginseng Soup',cat:'Korean',q:'samgyetang ginseng chicken soup healing'},
+  {name:'Kimchi Jjigae',cat:'Korean',q:'kimchi jjigae probiotic healing stew'},
+  {name:'Ssanghwa Tea',cat:'Korean',q:'ssanghwa herbal immunity korean tea remedy'},
+  {name:'Greek Avgolemono',cat:'Greek',q:'greek avgolemono lemon egg chicken soup healing'},
+  {name:'Moroccan Mint Tea',cat:'Moroccan',q:'moroccan mint tea atay healing remedy'},
+  {name:'Spanish Gazpacho',cat:'Spanish',q:'spanish gazpacho raw vegetable healing remedy'},
+  {name:'Italian Ribollita',cat:'Italian',q:'italian ribollita tuscan bean kale healing soup'},
+  {name:'French Onion Soup',cat:'French',q:'french onion soup healing remedy'},
+  {name:'Moringa Leaf Soup',cat:'West African',q:'west african moringa leaf healing soup'},
+  {name:'Rooibos Healing Tea',cat:'South African',q:'rooibos red bush tea antioxidant remedy'},
+  {name:'Ethiopian Tej Honey Wine',cat:'Ethiopian',q:'ethiopian tej honey wine healing remedy'},
+  {name:'Baobab Fruit Drink',cat:'African',q:'baobab fruit drink vitamin c healing remedy'},
+  {name:'Peruvian Caldo de Gallina',cat:'Peruvian',q:'peruvian caldo gallina hen broth healing soup'},
+  {name:'Mexican Caldo Tlalpeño',cat:'Mexican',q:'mexican caldo tlalpeno chipotle healing soup'},
+  {name:'Brazilian Açaí Bowl',cat:'Brazilian',q:'brazilian acai antioxidant healing bowl'},
+  {name:'Colombian Ajiaco',cat:'Colombian',q:'colombian ajiaco healing potato chicken soup'},
+  {name:'Mate Cocido',cat:'Argentine',q:'argentinian mate cocido herbal tea remedy'},
+  {name:'Persian Ash Reshteh',cat:'Persian',q:'persian ash reshteh new year healing soup'},
+  {name:'Jewish Chicken Soup',cat:'Jewish',q:'jewish chicken soup matzo penicillin remedy'},
+  {name:'Yemeni Saltah',cat:'Yemeni',q:'yemeni saltah fenugreek healing stew remedy'},
+  {name:'Bone Broth',cat:'Universal',q:'beef bone broth collagen healing remedy'},
+  {name:'Apple Cider Vinegar Tonic',cat:'Western',q:'apple cider vinegar detox healing tonic'},
+  {name:'Elderflower Cordial',cat:'European',q:'elderflower immune boosting cordial remedy'},
+  {name:'Nettle Soup',cat:'European',q:'nettle leaf soup iron mineral healing remedy'},
+  {name:'Garlic Honey Remedy',cat:'Universal',q:'raw garlic honey antibiotic healing remedy'},
+  {name:'Ginger Lemon Tea',cat:'Universal',q:'ginger lemon honey cold healing tea'},
+  {name:'Elderberry Syrup',cat:'North American',q:'elderberry syrup immune cold flu remedy'},
+  {name:'Thai Tom Kha Gai',cat:'Thai',q:'thai tom kha gai coconut galangal healing soup'},
+  {name:'Vietnamese Pho',cat:'Vietnamese',q:'vietnamese pho bo healing bone broth noodle'},
+  {name:'Indonesian Jamu',cat:'Indonesian',q:'indonesian jamu turmeric ginger traditional tonic'},
+  {name:'Malaysian Bak Kut Teh',cat:'Malaysian',q:'malaysian bak kut teh pork herbal healing soup'},
+  {name:'Filipino Sinigang',cat:'Filipino',q:'filipino sinigang tamarind sour healing soup'},
+  {name:'Māori Kawakawa Tea',cat:'New Zealand',q:'maori kawakawa leaf healing tea new zealand'},
+  {name:'Hawaiian Noni Juice',cat:'Hawaiian',q:'hawaiian noni fruit juice healing remedy'},
+  {name:'Pakistani Kahwa',cat:'Pakistani',q:'pakistani kahwa saffron green tea healing remedy'},
+  {name:'Sri Lankan Cinnamon Tea',cat:'Sri Lankan',q:'sri lankan cinnamon ceylon tea healing remedy'},
+  {name:'Nordic Rosehip Soup',cat:'Scandinavian',q:'nordic rosehip nyponsoppa vitamin C healing soup'},
+  {name:'Swedish Blueberry Soup',cat:'Swedish',q:'swedish blueberry soup antioxidant healing remedy'},
+  {name:'Tibetan Butter Tea',cat:'Tibetan',q:'tibetan po cha butter tea altitude remedy'},
+  {name:'Caribbean Soursop Tea',cat:'Caribbean',q:'caribbean soursop leaf tea healing remedy'},
+];
+
+// ══ NAVIGATION ══
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nl').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  const nl=document.getElementById('nl-'+page);
+  if(nl) nl.classList.add('active');
+  window.scrollTo(0,0);
+  document.getElementById('navLinks').classList.remove('open');
+  if(page==='cuisines') buildCuGrid('allCuGrid');
+}
+
+// ══ SEARCH ══
+function heroSearch(){ const v=document.getElementById('heroInput').value.trim(); if(v) go(v); }
+function spSearch(){ const v=document.getElementById('spInput').value.trim(); if(v) run(v); }
+
+function go(q){
+  nav('search');
+  document.getElementById('spInput').value=q;
+  run(q);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter') return;
+  if(document.activeElement===document.getElementById('heroInput')) heroSearch();
+  if(document.activeElement===document.getElementById('spInput')) spSearch();
+});
+
+// ══ FETCH WITH STREAMING ══
+async function run(query){
+  document.getElementById('spBody').style.display='none';
+  const rr=document.getElementById('recipeResult');
+  rr.style.display='block';
+  rr.innerHTML=`
+  <div class="rw">
+    <button class="back-btn" onclick="backToList()">← Back to all recipes</button>
+    <div class="rc">
+      <div class="rc-head">
+        <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#f5ede0;min-height:2.2rem;">
+          <span class="sk" style="display:inline-block;width:260px;height:1.6rem;vertical-align:middle;border-radius:6px;"></span>
+        </div>
+        <div style="font-size:.8rem;opacity:.4;color:#f5ede0;margin-top:.3rem;">Fetching recipe…</div>
+      </div>
+      <div class="rc-body">
+        <div style="display:flex;align-items:center;gap:14px;padding:.8rem 0 1.2rem;">
+          <div class="spinner" style="width:30px;height:30px;border-width:2px;margin:0;flex-shrink:0;"></div>
+          <span id="streamStatus" style="font-size:.88rem;color:var(--mid);">Connecting…</span>
+        </div>
+        <div id="streamBar" style="height:3px;background:var(--warm2);border-radius:3px;overflow:hidden;margin-bottom:1rem;">
+          <div id="streamFill" style="height:100%;background:var(--gold);width:5%;transition:width .3s;border-radius:3px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  const prompt=`You are the world's foremost expert on traditional food remedies, culinary medicine, and global cooking traditions. The user is searching for: "${query.trim()}"
+
+Respond with ONLY a valid JSON object. No markdown fences, no extra text before or after. Exact structure:
+{"name":"Full dish name","origin":"Country/region","tradition":"e.g. Ayurvedic / TCM / Mediterranean","category":"e.g. Healing Soup / Herbal Tea / Main Dish","tags":["tag1","tag2","tag3"],"description":"2-3 sentences on history and medicinal significance.","servings":"Serves X","prep_time":"X min","cook_time":"X min","difficulty":"Easy","ingredients":["qty + ingredient — prep note","qty + ingredient"],"steps":["Step 1 detailed","Step 2","Step 3","Step 4","Step 5","Step 6"],"health_remedies":[{"benefit":"Name","description":"One science-backed sentence."},{"benefit":"Name","description":"sentence."},{"benefit":"Name","description":"sentence."},{"benefit":"Name","description":"sentence."}],"nutrition":[{"key":"Calories","val":"~XXX kcal"},{"key":"Protein","val":"Xg"},{"key":"Vitamin C","val":"Xmg"},{"key":"Antioxidants","val":"High"}],"best_for":"Who benefits most.","pro_tip":"One specific tip most people don't know.","caution":"Any warnings or None for most people"}`;
+
+  let full='';
+  const steps_=['Connecting…','Receiving recipe…','Loading ingredients…','Loading cooking steps…','Loading health benefits…','Almost done…'];
+  let step=0;
+
+  try{
+    const res=await fetch('/api/recipe',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({query:query.trim()})
+    });
+
+    if(!res.ok){
+      const e=await res.json().catch(()=>({}));
+      throw new Error(e.error||`Server error ${res.status}`);
+    }
+
+    const reader=res.body.getReader();
+    const dec=new TextDecoder();
+
+    while(true){
+      const {done,value}=await reader.read();
+      if(done) break;
+      const chunk=dec.decode(value,{stream:true});
+      for(const line of chunk.split('\n')){
+        if(!line.startsWith('data:')) continue;
+        const d=line.slice(5).trim();
+        if(d==='[DONE]') break;
+        try{
+          const evt=JSON.parse(d);
+          if(evt.type==='content_block_delta'&&evt.delta?.text){
+            full+=evt.delta.text;
+            // update progress
+            const pct=Math.min(95,5+full.length/12);
+            const fill=document.getElementById('streamFill');
+            if(fill) fill.style.width=pct+'%';
+            const st=document.getElementById('streamStatus');
+            if(st){
+              if(full.includes('"ingredients"')&&step<2){step=2;st.textContent=steps_[2];}
+              else if(full.includes('"steps"')&&step<3){step=3;st.textContent=steps_[3];}
+              else if(full.includes('"health_remedies"')&&step<4){step=4;st.textContent=steps_[4];}
+              else if(step===0){step=1;st.textContent=steps_[1];}
+            }
+          }
+        }catch(e){}
+      }
+    }
+
+    const m=full.match(/\{[\s\S]*\}/);
+    if(!m) throw new Error('Could not parse response');
+    render(JSON.parse(m[0]));
+
+  }catch(e){
+    const sq=query.replace(/'/g,"\\'");
+    rr.innerHTML=`<div class="rw">
+      <div class="rc" style="max-width:480px;margin:0 auto;">
+        <div class="rc-body" style="text-align:center;padding:2.5rem 2rem;">
+          <div style="font-size:2.2rem;margin-bottom:.8rem;">⚠️</div>
+          <h3 style="font-family:'Playfair Display',serif;color:var(--spice);margin-bottom:.5rem;">Something went wrong</h3>
+          <p style="font-size:.86rem;color:var(--mid);margin-bottom:1.4rem;">${e.message||'Network error — please check your connection.'}</p>
+          <button onclick="run('${sq}')" style="background:var(--gold);border:none;border-radius:10px;padding:10px 22px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:8px;">↻ Retry</button>
+          <br/><br/><button class="back-btn" onclick="backToList()">← Back to recipes</button>
+        </div>
+      </div>
+    </div>`;
+  }
+}
+
+function render(r){
+  const mkTags=arr=>(arr||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  const metaArr=[r.origin,r.tradition,r.difficulty,r.servings,r.prep_time?'Prep: '+r.prep_time:'',r.cook_time?'Cook: '+r.cook_time:''].filter(Boolean);
+  document.getElementById('recipeResult').innerHTML=`
+  <div class="rw">
+    <button class="back-btn" onclick="backToList()">← Back to all recipes</button>
+    <div class="rc">
+      <div class="rc-head">
+        <h1>${r.name}</h1>
+        <div class="sub">${r.category||'World Remedy'}</div>
+        <div class="tags" style="margin-top:.8rem;">${mkTags(metaArr)}${mkTags(r.tags)}</div>
+      </div>
+      <div class="rc-body">
+        <div class="rs">
+          <div class="rst">About This Remedy</div>
+          <p class="desc">${r.description}</p>
+          ${r.best_for?`<p class="desc" style="margin-top:.6rem;font-style:italic;color:var(--herb);"><strong>Best for:</strong> ${r.best_for}</p>`:''}
+        </div>
+        ${r.ingredients?.length?`<div class="rs"><div class="rst">Ingredients</div><div class="ing-grid">${r.ingredients.map(i=>`<div class="ing">${i}</div>`).join('')}</div></div>`:''}
+        ${r.steps?.length?`<div class="rs"><div class="rst">Cooking Method — Step by Step</div>${r.steps.map((s,i)=>`<div class="step"><div class="sn">${i+1}</div><div class="st">${s}</div></div>`).join('')}</div>`:''}
+        ${r.health_remedies?.length?`<div class="rs"><div class="rst">Health Remedies &amp; Benefits</div><div class="rem-grid">${r.health_remedies.map(h=>`<div class="rem"><strong>${h.benefit}</strong><span>${h.description}</span></div>`).join('')}</div></div>`:''}
+        ${r.nutrition?.length?`<div class="rs"><div class="rst">Nutrition at a Glance</div><div class="nut-grid">${r.nutrition.map(n=>`<div class="nut"><div class="nut-val">${n.val}</div><div class="nut-key">${n.key}</div></div>`).join('')}</div></div>`:''}
+        ${r.pro_tip?`<div class="rs"><div class="rst">Pro Tip</div><div class="tip">💡 ${r.pro_tip}</div></div>`:''}
+        ${r.caution&&r.caution!=='None for most people'?`<div class="rs"><div class="rst">Caution</div><div class="warn">⚠️ ${r.caution}</div></div>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function backToList(){
+  document.getElementById('recipeResult').style.display='none';
+  document.getElementById('recipeResult').innerHTML='';
+  document.getElementById('spBody').style.display='block';
+  document.getElementById('spInput').value='';
+}
+
+// ══ BUILD GRIDS ══
+function buildCuGrid(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML=CUISINES.map(c=>`<div class="cu-card" onclick="go('${c.q}')"><span class="flag">${c.flag}</span><h3>${c.name}</h3><p>${c.sub}</p></div>`).join('');
+}
+
+function buildList(){
+  const el=document.getElementById('allList');
+  if(!el) return;
+  el.innerHTML=RECIPES.map(r=>`<div class="rlink" onclick="go('${r.q}')">${r.name}<small>${r.cat}</small></div>`).join('');
+}
+
+buildCuGrid('homeCuGrid');
+buildList();
+</script>
+</body>
+</html>
