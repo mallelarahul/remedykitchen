@@ -83,7 +83,6 @@ Respond with ONLY a valid JSON object. No markdown fences, no extra text before 
     }
   }
 });
-
 // ── Health check ──
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'RemedyKitchen is running 🌿' });
